@@ -18,6 +18,12 @@ public class Memo {
         this.username = memoRequestDto.getUsername();
         this.contents = memoRequestDto.getContents();
     }
+
+    // 데이터 수정 위해 생성자 생성
+    public void update(MemoRequestDto memoRequestDto) {
+        this.username = memoRequestDto.getUsername();
+        this.contents = memoRequestDto.getContents();
+    }
 }
 
 // Getter/Setter , 생성자 없음

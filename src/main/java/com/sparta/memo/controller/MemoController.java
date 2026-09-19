@@ -17,10 +17,10 @@ public class MemoController {
     private final Map<Long, Memo> memoList = new HashMap<>();
 
     /*
-    * 데이터 Body 부분에 JSON 형태로 넘어감.
-    * - Postman : Post - http://localhost:8080/api/memos : raw -> JSON 방식으로 삽입 - Send - 작성
-    *
-    */
+     * 데이터 Body 부분에 JSON 형태로 넘어감.
+     * - Postman : Post - http://localhost:8080/api/memos : raw -> JSON 방식으로 삽입 - Send - 작성
+     *
+     */
     @PostMapping("/memos")
     public MemoResponseDto createMemo(@RequestBody MemoRequestDto memoRequestDto) {
 
@@ -51,4 +51,39 @@ public class MemoController {
 
         return responseList;
     }
+
+    @PutMapping("/memos/{id}") // update API, @RequestBody - JSON
+    public Long updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto memoRequestDto) {
+        // 우리가 메모 수정 시, 실제로 메모가 데이터베이스에 존재하는가 체크 필요.
+        if (memoList.containsKey(id)) {
+            // 해당 메모 가져옴
+            Memo memo = memoList.get(id); // id 넣으면 id에 맞게 들어오는 객체 정보 반환
+
+            // 메모 수정
+            memo.update(memoRequestDto);
+
+            // ID 반환
+            return memo.getId();
+
+        } else {
+            // false
+            throw new IllegalArgumentException("선택한 메모는 없음");
+        }
+    }
+
+    @DeleteMapping("/memos/{id}")
+    public Long deleteMemo(@PathVariable Long id) {
+        // 해당 메모 존재 확인
+        if (memoList.containsKey(id)) {
+            // 해당 메모 삭제
+            memoList.remove(id);
+            return id;
+        } else {
+            throw new IllegalArgumentException("선택한 메모 존재 X");
+        }
+    }
+
+    // Ctrl + Alt + L : 들여쓰기 정렬
+
+
 }
